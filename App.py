@@ -85,7 +85,7 @@ class CanvasComponent(Canvas):
 
 # LoginButton component (Parent:App)
 class LoginButtonComponent(Button):
-    def __init__(self, parent, appState,  *args, **kwargs):
+    def __init__(self, parent,  *args, **kwargs):
         super().__init__(parent)
         button_image_1: PhotoImage = PhotoImage(
             file=relative_to_assets("img/button_1.png"))
@@ -99,11 +99,10 @@ class LoginButtonComponent(Button):
         self.image = button_image_1
 
     def button_click(self):
-        print(self.)
+        print(self)
         pass
 class App(Tk):
-    def __init__(self, btnInstance,  *args, **kwargs):
-        self.btnComponentInstance = btnInstance
+    def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.launchState = False
 
