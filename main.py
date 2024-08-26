@@ -70,9 +70,14 @@ def sendHistoryToApp(all_messages, client):
 
             # writer.writerow([date, sender, message_text])
 
-# Press the green button in the gutter to run the script.
+
+
+# Press the green button in the App to run the script.
 if __name__ == '__main__':
     app = App() # Get App class
-    if (app.launched() == True):
-        print("Launch complete")
+    if (app.launchState == True): # Button click event
+        print("App launched, button clicked") #debug
+
+        onAppLoad(api_id, api_hash, phone) #load App
+
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

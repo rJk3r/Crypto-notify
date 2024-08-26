@@ -8,7 +8,8 @@ current_dir = Path(__file__).parent.resolve()
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, NW
+from PIL import Image, ImageTk
 
 PROGRAM_PATH = Path(__file__).parent
 ASSETS_PATH = PROGRAM_PATH / 'ASSETS'
@@ -16,17 +17,37 @@ ASSETS_PATH = PROGRAM_PATH / 'ASSETS'
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
+
 # Canvas component (Parent:App)
 class CanvasComponent(Canvas):
     def __init__(self, parent, *args, **kwargs):
         super().__init__(parent)
+
+        # Default canvas background
+
+        firstBG = Image.open(relative_to_assets("img/bg.png"))
+        firstBG = firstBG.resize((400, 600))
+        firstAppBg = ImageTk.PhotoImage(firstBG)
+
+        # Logo
+
+        logoIMG = Image.open(relative_to_assets("img/logo.png"))
+        logoIMG = logoIMG.resize((45, 45))
+        logoRectangleBG = ImageTk.PhotoImage(logoIMG)
+
         self.config(
-            bg = "#263B53",
-            height=600,
-            width=400,
-            bd=0,
-            highlightthickness=0,
-            relief="ridge"
+                height=600,
+                width=400,
+                bd=0,
+                highlightthickness=0,
+                relief="ridge"
+            )
+
+        self.create_image(
+            0,
+            0,
+            anchor=NW,
+            image=firstAppBg
         )
 
         self.place(
@@ -37,18 +58,11 @@ class CanvasComponent(Canvas):
         self.create_rectangle(
             0.0,
             0.0,
-            400.0,
-            600.0,
-            fill="#FFFFFF",
-            outline="")
-
-        self.create_rectangle(
-            0.0,
-            0.0,
-            400.0,
+            400,
             53.0,
             fill="#171717",
             outline="")
+
 
         self.create_text(
             58.0,
@@ -59,32 +73,39 @@ class CanvasComponent(Canvas):
             font=("Inter Bold", 24 * -1)
         )
 
-        self.create_rectangle(
+        self.create_image(
             6.0,
             4.0,
-            51.0,
-            49.0,
-            fill="#FFFFFF",
-            outline="")
+            anchor=NW,
+            image=logoRectangleBG,
+            )
+
+        self.image = [firstAppBg, logoRectangleBG]
 
 
 # LoginButton component (Parent:App)
 class LoginButtonComponent(Button):
-    def __init__(self, parent, *args, **kwargs):
+    def __init__(self, parent, appState,  *args, **kwargs):
         super().__init__(parent)
         button_image_1: PhotoImage = PhotoImage(
             file=relative_to_assets("img/button_1.png"))
         self.config(
             image=button_image_1,
             borderwidth=0,
+            command=self.button_click,
             highlightthickness=0,
-            command=lambda: print("button_1 clicked"),
             relief="flat"
         )
+        self.image = button_image_1
 
+    def button_click(self):
+        print(self.)
+        pass
 class App(Tk):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, btnInstance,  *args, **kwargs):
+        self.btnComponentInstance = btnInstance
         super().__init__(*args, **kwargs)
+        self.launchState = False
 
 
         self.title("CryptoNotify")  # Window name
@@ -96,7 +117,7 @@ class App(Tk):
         self.canvas.pack()
 
         # Login Button
-        self.button_1 = LoginButtonComponent(self)
+        self.button_1 = LoginButtonComponent(self, command=self.button_click)
         self.button_1.place(    # set button size and position
             x=67.0,
             y=418.0,
@@ -106,15 +127,11 @@ class App(Tk):
         self.resizable(False, False)
         self.mainloop()  # Run window
 
-    def launched(self):
-        if (self.button_1.winfo_exists() == True):
-                launchState = True
-                return launchState
-        else:
-            launchState = False
-            return  launchState
+    def changeLaunchState(self):
+        self.launchState = True
+        pass
 
 
     def button_click(self):
-        """Функция, вызываемая при нажатии на кнопку."""
-        self.label.config(text="Кнопка нажата!")
+        self.launchState = True
+        return self.launchState
