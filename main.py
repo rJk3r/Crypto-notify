@@ -12,9 +12,11 @@ from telethon.tl.types import InputPeerEmpty, InputPeerChannel, InputPeerUser, I
 
 import time # Time library for send timestamp
 
-import tkinter
 
 import os
+
+# App style and GUI import
+from App import CanvasComponent, LoginButtonComponent, App
 
 # api data
 api_id = 7024466037 # Change API id to your
@@ -25,9 +27,8 @@ limit = 10; # set your message limit
 chat_id = 1234567890 # Set your chat_id to get the message
 
 def onAppLoad(api_id, api_hash, phone):
-    if (type(api_id) is int and type(api_id) is str and type(phone) is str):
+    if (type(api_id) is int and type(api_id) is str and type(phone) is str): # Here we check the config data
         try:
-            print("123")
 
             client = TelegramClient(phone, api_id, api_hash) # initialize a telegram client
             time.sleep(1) # Delay for debug
@@ -56,7 +57,7 @@ def getChatHistory(client):
 
 def sendHistoryToApp(all_messages, client):
     for message in all_messages:
-        # Извлеките информацию из сообщения
+        # Get message data (Timestamp, text and message authors)
         if message.message:
             if isinstance(message.sender_id, int):
                 user = client.get_input_entity(message.sender_id)
@@ -71,5 +72,7 @@ def sendHistoryToApp(all_messages, client):
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print("works")
+    app = App() # Get App class
+    if (app.launched() == True):
+        print("Launch complete")
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
