@@ -14,34 +14,38 @@ import time # Time library for send timestamp
 
 
 import os
+import sys
+os.chdir(sys.path[0])
 
 # App style and GUI import
-from App import CanvasComponent, LoginButtonComponent, App
-
-# api data
-api_id = 7024466037 # Change API id to your
-api_hash = 'a0c785ad0fd3e92e7c131f0a70987987' # change API hash to your
-phone = '+79538944500' # set your phone number
-limit = 10; # set your message limit
+from App import *
+from config import api_id, api_hash, phone, limit #import user data
 
 chat_id = 1234567890 # Set your chat_id to get the message
 
+def startUserAuthorization():
+    print("autorize")
+    pass
+
 def onAppLoad(api_id, api_hash, phone):
-    if (type(api_id) is int and type(api_id) is str and type(phone) is str): # Here we check the config data
+    if (type(api_id) is str and type(api_id) is str and type(phone) is str): # Here we check the config data
         try:
 
             client = TelegramClient(phone, api_id, api_hash) # initialize a telegram client
             time.sleep(1) # Delay for debug
             if not client.is_user_authorized():
+                print("i am unathorized")
+                startUserAuthorization() #change window to authorize
                 client.send_code_request(phone)
                 time.sleep(3) # Delay for login
                 client.sign_in(phone, input("Введите код: "))
-            client.start() # start client
+            client.connect() # start client
+            print("i am here 123")
         except Exception as err:
             time.sleep(2) # Delay to send error
             print("[ERROR]: ", err) # raise exception if you have troubles with authorizaion or client initialization
     else:
-        print("[ERROR]: Неверно указаны данные api_id, api_hash, или phone") # You have bad API data
+        print("[ERROR]: Неверно указаны данные api_id, api_hash, или phone") # You have bad API data or phone data
 
 
 def getChatHistory(client):
@@ -75,9 +79,7 @@ def sendHistoryToApp(all_messages, client):
 # Press the green button in the App to run the script.
 if __name__ == '__main__':
     app = App() # Get App class
-    if (app.launchState == True): # Button click event
-        print("App launched, button clicked") #debug
 
-        onAppLoad(api_id, api_hash, phone) #load App
+    onAppLoad(api_id, api_hash, phone)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

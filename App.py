@@ -14,6 +14,10 @@ from PIL import Image, ImageTk
 PROGRAM_PATH = Path(__file__).parent
 ASSETS_PATH = PROGRAM_PATH / 'ASSETS'
 
+#main program import
+from main import onAppLoad
+from config import api_id, api_hash, phone
+
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
@@ -99,12 +103,10 @@ class LoginButtonComponent(Button):
         self.image = button_image_1
 
     def button_click(self):
-        print(self)
-        pass
+        onAppLoad(api_id, api_hash, phone)
 class App(Tk):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.launchState = False
 
 
         self.title("CryptoNotify")  # Window name
@@ -126,11 +128,5 @@ class App(Tk):
         self.resizable(False, False)
         self.mainloop()  # Run window
 
-    def changeLaunchState(self):
-        self.launchState = True
-        pass
-
-
     def button_click(self):
-        self.launchState = True
-        return self.launchState
+        return True
