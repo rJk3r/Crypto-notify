@@ -33,17 +33,15 @@ def onAppLoad(api_id, api_hash, phone):
 
             client = TelegramClient(phone, api_id, api_hash) # initialize a telegram client
             time.sleep(1) # Delay for debug
+            client.connect()  # start client
             if not client.is_user_authorized():
-                print("i am unathorized")
-                startUserAuthorization() #change window to authorize
-                client.send_code_request(phone)
-                time.sleep(3) # Delay for login
-                client.sign_in(phone, input("Введите код: "))
-            client.connect() # start client
-            print("i am here 123")
+                #client.send_code_request(phone)
+                App().renderUnathorizedCanvas()
+                #client.sign_in(phone, input("Введите код: "))
         except Exception as err:
             time.sleep(2) # Delay to send error
             print("[ERROR]: ", err) # raise exception if you have troubles with authorizaion or client initialization
+            App.renderUnathorizedCanvas(self=app)
     else:
         print("[ERROR]: Неверно указаны данные api_id, api_hash, или phone") # You have bad API data or phone data
 
@@ -81,5 +79,6 @@ if __name__ == '__main__':
     app = App() # Get App class
 
     onAppLoad(api_id, api_hash, phone)
+    print(type(app))
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
