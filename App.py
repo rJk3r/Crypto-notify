@@ -39,6 +39,7 @@ class CanvasComponent(Canvas):
         logoIMG = logoIMG.resize((45, 45))
         logoRectangleBG = ImageTk.PhotoImage(logoIMG)
 
+
         self.config(
                 height=600,
                 width=400,
@@ -102,6 +103,12 @@ class UnathorizedCanvas(Canvas):
         logoIMG = logoIMG.resize((45, 45))
         logoRectangleBG = ImageTk.PhotoImage(logoIMG)
 
+        # Unathorized canvas backgrounds
+
+        attentionLocked = Image.open(relative_to_assets("img/lock.png"))
+        attentionLocked = attentionLocked.resize((360, 259))
+        attentionLocked = ImageTk.PhotoImage(attentionLocked)
+
         self.config(
             height=600,
             width=400,
@@ -116,6 +123,7 @@ class UnathorizedCanvas(Canvas):
             anchor=NW,
             image=firstAppBg
         )
+
 
         self.place(
             x=0,
@@ -147,13 +155,12 @@ class UnathorizedCanvas(Canvas):
             image=logoRectangleBG,
             )
 
-        self.create_rectangle(
+        self.create_image(
             20.0,
             65.0,
-            380.0,
-            324.0,
-            fill="#E27272",
-            outline="")
+            anchor=NW,
+            image=attentionLocked,
+            )
 
         self.create_text(
             20.0,
@@ -173,7 +180,7 @@ class UnathorizedCanvas(Canvas):
             font=("AverageSans Regular", 20 * -1)
         )
 
-        self.image = [firstAppBg, logoRectangleBG]
+        self.image = [firstAppBg, logoRectangleBG, attentionLocked]
 
 
 
@@ -194,6 +201,7 @@ class LoginButtonComponent(Button):
 
     def button_click(self):
         onAppLoad(api_id, api_hash, phone)
+        App().renderUnathorizedCanvas(self=App)
 class App(Tk):
     def __init__(self,  *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -217,8 +225,11 @@ class App(Tk):
         )
 
         # Canvas component if App get unathorized_sesion
-        self.unathorizedPage = UnathorizedCanvas(self)
-        self.unathorizedPage.pack()
+        self.startPageRenderCanvas = CanvasComponent(self)
+        self.startPageRenderCanvas.pack = CanvasComponent(self).pack
+
+        self.startPageRenderBtn = LoginButtonComponent(self)
+        self.startPageRenderBtn.pack = LoginButtonComponent(self).pack
 
         self.resizable(False, False)
         self.mainloop()  # Run window
