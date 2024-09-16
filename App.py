@@ -224,12 +224,8 @@ class App(Tk):
             height=69.0
         )
 
-        # Canvas component if App get unathorized_sesion
-        self.startPageRenderCanvas = CanvasComponent(self)
-        self.startPageRenderCanvas.pack = CanvasComponent(self).pack
+        self.button_1.pack()
 
-        self.startPageRenderBtn = LoginButtonComponent(self)
-        self.startPageRenderBtn.pack = LoginButtonComponent(self).pack
 
         self.resizable(False, False)
         self.mainloop()  # Run window
@@ -239,5 +235,16 @@ class App(Tk):
 
     def renderUnathorizedCanvas(self):
         self.canvas.pack_forget() # hide first canvas
-        self.unathorizedPage.pack()
         pass
+    def renderStartPage(self):
+        #Starter Canvas
+        self.canvas = CanvasComponent(self)
+        self.canvas.pack
+        # Login Button
+        self.button_1 = LoginButtonComponent(self, command=self.button_click)
+        self.button_1.place(  # set button size and position
+            x=67.0,
+            y=418.0,
+            width=267.0,
+            height=69.0
+        )

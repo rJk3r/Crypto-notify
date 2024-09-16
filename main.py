@@ -41,7 +41,7 @@ def onAppLoad(api_id, api_hash, phone):
         except Exception as err:
             time.sleep(2) # Delay to send error
             print("[ERROR]: ", err) # raise exception if you have troubles with authorizaion or client initialization
-            #App.renderUnathorizedCanvas(self=app)
+            App.renderUnathorizedCanvas(self=app)
     else:
         print("[ERROR]: Неверно указаны данные api_id, api_hash, или phone") # You have bad API data or phone data
 
@@ -77,6 +77,7 @@ def sendHistoryToApp(all_messages, client):
 # Press the green button in the App to run the script.
 if __name__ == '__main__':
     app = App() # Get App class
+    App.renderStartPage(self=app)
     print(type(app))
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
